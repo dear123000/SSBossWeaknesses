@@ -8,6 +8,8 @@ gem 'rails', '3.2.13'
 gem 'activeadmin'
 gem "meta_search",    '>= 1.1.0.pre'
 
+gem 'yaml_db'
+
 group :development, :test do
 	gem 'sqlite3'
 end
@@ -26,6 +28,8 @@ group :assets do
   # gem 'therubyracer', :platforms => :ruby
 
   gem 'uglifier', '>= 1.0.3'
+  gem 'yui-compressor'
+  gem 'compass-rails'
 end
 
 gem 'jquery-rails'
