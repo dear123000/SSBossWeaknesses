@@ -1,0 +1,90 @@
+<div id="main">
+
+	<div id="head">
+		<img src="assets/logo.png" height="200" />
+	</div>
+
+	<div id="filter-element">
+		<ul>
+			<a href="#" filter=".fire"><li class="fire">FIRE</li></a>
+			<a href="#" filter=".ice"><li class="ice">ICE</li></a>
+			<a href="#" filter=".thunder"><li class="thunder">THUNDER</li></a>
+			<a href="#" filter=".stone"><li class="stone">STONE</li></a>
+			<a href="#" filter=".poison"><li class="poison">POISON</li></a>
+			<a href="#" filter=".all"><li class="all">ALL</li></a>
+			<a href="#" filter=".none"><li class="none">NONE</li></a>
+		</ul>
+	</div>
+
+	<div id="filter-type">
+		<ul>
+			<a href="#" filter="*"><li>Show All</li></a>
+			<a href="#" filter=".boss"><li>Bosses</li></a>
+			<a href="#" filter=".non-boss"><li>Non-bosses</li></a>
+		</ul>
+	</div>
+
+	<div id="current-filter">
+		<p>Current filter: <span>Showing all monsters</span> </p>
+	</div>
+
+	<div id="monsters-list">
+		<% @monsters.each do |m| %>
+			<% if m.boss == true
+					type = "boss"
+				else
+					type = "non-boss"
+				end
+				%>
+			<div class="monster <%= m.weakness.downcase %> <%= type %>" style="background-image: url('/assets/<%= m.weakness.downcase %>.png');">
+				<h1><%= m.name %></h1>
+				<h2>Weak against: <span class="elecolor-<%= m.weakness.downcase %>"><%= m.weakness %></span></h2>
+			</div>
+		<% end %>
+	</div>
+
+</div>
+
+<script>
+	$("div#monsters-list").isotope({
+		itemSelector: 'div.monster',
+		layoutMode: 'masonry',
+		animationOptions: {
+     duration: 750,
+     easing: 'linear',
+     queue: false
+   	}
+	});
+
+	$("div#filter-element ul a, div#filter-type ul a").click(function(e){
+		e.preventDefault();
+
+		var selector = $(this).attr('filter');
+
+		$("div#monsters-list").isotope({ filter: selector });
+
+		var msg = '';
+
+		if(selector == '*'){
+			msg = 'Showing all monsters';
+		}
+		else if(selector == '.boss'){
+			msg = 'Showing all bosses';
+		}
+		else if(selector == '.non-boss'){
+			msg = 'Showing all non-bosses';
+		}
+		else if(selector == '.all'){
+			msg = 'Weak against all elements';
+		}
+		else if(selector == '.none'){
+			msg = 'Weak against none';
+		}
+		else {
+			var element = selector.substring(1);
+			msg = 'Weak against ' + element + ' element';
+		}
+
+		$("div#current-filter p span").html(msg);
+	});
+</script>
